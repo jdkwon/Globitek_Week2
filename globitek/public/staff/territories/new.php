@@ -44,6 +44,8 @@ if(is_post_request()) {
 
   <h1>New Territory</h1>
 
+  <?php echo display_errors($errors); ?>
+
   <form action="#" method="post">
     Name:<br />
     <input type="text" name="name" value="<?php echo $territory['name']; ?>" /><br />

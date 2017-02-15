@@ -21,9 +21,50 @@
 
   // has_valid_email_format('test@test.com')
   function has_valid_email_format($value) {
-    // Function can be improved later to check for
-    // more than just '@'.
     return filter_var($value, FILTER_VALIDATE_EMAIL);
+  }
+
+  // return TRUE if valid, FALSE when it's not
+  function has_valid_phone($value) {
+    $phoneReg = "^(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$";
+    if(preg_match($phoneReg, $value)) return true;
+    else return false;
+  }
+
+  function has_valid_name($value) {
+    return preg_match('/\A[A-Za-z\s\-,\.\']+\Z/', $value);
+  }
+
+  function has_valid_username($value) {
+    return preg_match('/\A[A-Za-z0-9_]+\Z/', $value);
+  }
+
+  // return TRUE if it is unique, FALSE when there exists
+  function has_unique_username($value) {
+    $value = filter_var($value, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    global $db;
+    $sql = "SELECT * FROM users WHERE username='" . $value . "';";
+    $query = db_query($db, $sql);
+
+    while($result = $query->fetch_assoc()) {
+      if($value == $result['username']) return false;
+    }
+    return true;
+  }
+
+  // return TRUE if upper case, FALSE if not
+  function has_valid_state_code($value) {
+    return ctype_upper($value);
+  }
+
+  // return TRUE if all numbers
+  function has_valid_territory_position($value) {
+    return is_numeric($value);
+  }
+
+  // return TRUE if positive
+  function is_positive($value) {
+    return $value > 0;
   }
 
 ?>
