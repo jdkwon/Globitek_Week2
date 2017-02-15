@@ -73,13 +73,15 @@ The following advanced user stories are optional:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='http://i.imgur.com/hmaFEaO.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-Describe any challenges encountered while building the app.
+It was not too bad but the hardest were to check for SQL injections. That took the longest time.
+
+**NOTE** I have updated the validation function after recording the gif and did not have time to record it again.
 
 ## License
 
