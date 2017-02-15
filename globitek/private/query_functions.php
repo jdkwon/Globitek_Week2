@@ -3,7 +3,7 @@
 
   function delete_user($user) {
     global $db;
-    $sql = "DELETE FROM users WHERE username='" . $user['username'] . "';";
+    $sql = "DELETE FROM users WHERE username='" . $user['username'] . "' LIMIT 1;";
     $delete_result = db_query($db, $sql);
     return $delete_result;
   }
