@@ -60,7 +60,12 @@
       return $errors;
     }
 
-    $sql = ""; // TODO add SQL
+    $sql = "INSERT INTO states ";
+    $sql .= "(name, code) ";
+    $sql .= "VALUES (";
+    $sql .= "'" . db_escape($db, $state['name']) . "',";
+    $sql .= "'" . db_escape($db, $state['code']) . "'";
+    $sql .= ");";
     // For INSERT statments, $result is just true/false
     $result = db_query($db, $sql);
     if($result) {
@@ -84,7 +89,11 @@
       return $errors;
     }
 
-    $sql = ""; // TODO add SQL
+    $sql = "UPDATE states SET ";
+    $sql .= "name='" . db_escape($db, $state['name']) . "', ";
+    $sql .= "code='" . db_escape($db, $state['code']) . "' ";
+    $sql .= "WHERE id='" . db_escape($db, $state['id']) . "' ";
+    $sql .= "LIMIT 1;";
     // For update_state statments, $result is just true/false
     $result = db_query($db, $sql);
     if($result) {
@@ -146,7 +155,13 @@
       return $errors;
     }
 
-    $sql = ""; // TODO add SQL
+    $sql = "INSERT INTO territories ";
+    $sql .= "(name, state_id, position) ";
+    $sql .= "VALUES (";
+    $sql .= "'" . db_escape($db, $territory['name']) . "',";
+    $sql .= "'" . db_escape($db, $territory['state_id']) . "',";
+    $sql .= "'" . db_escape($db, $territory['position']) . "'";
+    $sql .= ");";
     // For INSERT statments, $result is just true/false
     $result = db_query($db, $sql);
     if($result) {
@@ -170,7 +185,13 @@
       return $errors;
     }
 
-    $sql = ""; // TODO add SQL
+    $sql = "UPDATE territories SET ";
+    $sql .= "name='" . db_escape($db, $territory['name']) . "', ";
+    $sql .= "state_id='" . db_escape($db, $territory['state_id']) . "', ";
+    $sql .= "position='" . db_escape($db, $territory['position']) . "' ";
+    $sql .= "WHERE id='" . db_escape($db, $territory['id']) . "' ";
+    $sql .= "LIMIT 1;";
+
     // For update_territory statments, $result is just true/false
     $result = db_query($db, $sql);
     if($result) {
@@ -222,6 +243,29 @@
 
   function validate_salesperson($salesperson, $errors=array()) {
     // TODO add validations
+    if (is_blank($salesperson['first_name'])) {
+      $errors[] = "First name cannot be blank.";
+    } elseif (!has_length($salesperson['first_name'], array('min' => 2, 'max' => 255))) {
+      $errors[] = "First name must be between 2 and 255 characters.";
+    }
+
+    if (is_blank($salesperson['last_name'])) {
+      $errors[] = "Last name cannot be blank.";
+    } elseif (!has_length($salesperson['last_name'], array('min' => 2, 'max' => 255))) {
+      $errors[] = "Last name must be between 2 and 255 characters.";
+    }
+
+    if (is_blank($salesperson['phone'])) {
+      $errors[] = "Phone cannot be blank.";
+    } elseif (!has_length($salesperson['phone'], array('max' => 255))) {
+      $errors[] = "Phone must be less than 255 characters.";
+    }
+
+    if (is_blank($salesperson['email'])) {
+      $errors[] = "Email cannot be blank.";
+    } elseif (!has_valid_email_format($salesperson['email'])) {
+      $errors[] = "Email must be a valid format.";
+    }
 
     return $errors;
   }
@@ -236,7 +280,16 @@
       return $errors;
     }
 
-    $sql = ""; // TODO add SQL
+    // TODO add SQL
+    $sql = "INSERT INTO salespeople ";
+    $sql .= "(first_name, last_name, phone, email) ";
+    $sql .= "VALUES (";
+    $sql .= "'" . db_escape($salesperson['first_name']) . "',";
+    $sql .= "'" . db_escape($salesperson['last_name']) . "',";
+    $sql .= "'" . db_escape($salesperson['phone']) . "',";
+    $sql .= "'" . db_escape($salesperson['email']) . "',";
+    $sql .= ");";
+
     // For INSERT statments, $result is just true/false
     $result = db_query($db, $sql);
     if($result) {
@@ -260,7 +313,13 @@
       return $errors;
     }
 
-    $sql = ""; // TODO add SQL
+    $sql = "UPDATE salespeople SET ";
+    $sql .= "first_name='" . db_escape($salesperson['first_name']) . "', ";
+    $sql .= "last_name='" . db_escape($salesperson['last_name']) . "', ";
+    $sql .= "phone='" . db_escape($salesperson['phone']) . "', ";
+    $sql .= "email='" . db_escape($salesperson['email']) . "' ";
+    $sql .= "WHERE id='" . db_escape($salesperson['id']) . "' ";
+    $sql .= "LIMIT 1;";
     // For update_salesperson statments, $result is just true/false
     $result = db_query($db, $sql);
     if($result) {
@@ -350,11 +409,11 @@
     $sql = "INSERT INTO users ";
     $sql .= "(first_name, last_name, email, username, created_at) ";
     $sql .= "VALUES (";
-    $sql .= "'" . $user['first_name'] . "',";
-    $sql .= "'" . $user['last_name'] . "',";
-    $sql .= "'" . $user['email'] . "',";
-    $sql .= "'" . $user['username'] . "',";
-    $sql .= "'" . $created_at . "',";
+    $sql .= "'" . db_escape($user['first_name']) . "',";
+    $sql .= "'" . db_escape($user['last_name']) . "',";
+    $sql .= "'" . db_escape($user['email']) . "',";
+    $sql .= "'" . db_escape($user['username']) . "',";
+    $sql .= "'" . $created_at . "'";
     $sql .= ");";
     // For INSERT statments, $result is just true/false
     $result = db_query($db, $sql);
@@ -380,11 +439,11 @@
     }
 
     $sql = "UPDATE users SET ";
-    $sql .= "first_name='" . $user['first_name'] . "', ";
-    $sql .= "last_name='" . $user['last_name'] . "', ";
-    $sql .= "email='" . $user['email'] . "', ";
-    $sql .= "username='" . $user['username'] . "' ";
-    $sql .= "WHERE id='" . $user['id'] . "' ";
+    $sql .= "first_name='" . db_escape($user['first_name']) . "', ";
+    $sql .= "last_name='" . db_escape($user['last_name']) . "', ";
+    $sql .= "email='" . db_escape($user['email']) . "', ";
+    $sql .= "username='" . db_escape($user['username']) . "' ";
+    $sql .= "WHERE id='" . db_escape($user['id']) . "' ";
     $sql .= "LIMIT 1;";
     // For update_user statments, $result is just true/false
     $result = db_query($db, $sql);

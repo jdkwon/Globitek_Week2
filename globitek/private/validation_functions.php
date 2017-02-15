@@ -23,7 +23,7 @@
   function has_valid_email_format($value) {
     // Function can be improved later to check for
     // more than just '@'.
-    return strpos($value, '@') !== false;
+    return filter_var($value, FILTER_VALIDATE_EMAIL);
   }
 
 ?>
